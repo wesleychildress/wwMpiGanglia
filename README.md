@@ -1,4 +1,4 @@
-# wwMpi
+# wwMpiGanglia
 an attempt to automate the installation and configuration of a cluster with warewulf and mpich
 
 Guidelines for Creating Debian 7.11 Linux Cluster
@@ -80,19 +80,20 @@ ls -ltra /home
 su (non-root username)
 
 cd
-ssh-keygen -t rsa
-(enter no passphrase)
+echo -ne '\n' | ssh-keygen -t rsa
+# (enter no passphrase)
 cd ~/.ssh
 cp id_rsa.pub authorized_keys
 cd
-ssh n0001
+yes "" | ssh n0001
 # (answer yes)
-ssh (masternode)
+yes "" | ssh $masternode
 # (answer yes)
 exit
 exit
 ssh n0001
 ssh (masternode)
+exit
 exit
 exit
 
