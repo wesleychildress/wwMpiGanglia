@@ -115,6 +115,10 @@ cp -f $DIR/configFiles/sources.list /srv/chroots/debian7/etc/apt/sources.list
 mv -f /srv/chroots/debian7/etc/ntp.conf /srv/chroots/debian7/etc/ntp.conf.og
 cp -f $DIR/configFiles/ntp.conf /srv/chroots/debian7/etc/ntp.conf
 
+# cp ganglia into place /etc/ganglia/gmond.conf
+mv -f /srv/chroots/debian7/etc/ganglia/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf
+cp -f $DIR/configFiles/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf
+
 # update debian7 vnfs (magic land)
 chroot /srv/chroots/debian7 ./chroot.sh
 
@@ -127,7 +131,7 @@ wwsh dhcp update
 wwsh pxe update
 echo 'success'
 
-# reboot 
+# reboot
 echo 'System will now reboot to finish install'
 sleep 5s; shutdown -r now
 exit

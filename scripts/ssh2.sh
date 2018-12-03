@@ -14,23 +14,12 @@ echo -ne '\n' | ssh-keygen -t rsa
 cd ~/.ssh
 cp id_rsa.pub authorized_keys
 cd
-yes "" | ssh n0001
-# (answer yes)
-yes "" | ssh $masternode
-# (answer yes)
+ssh -y n0001 'ssh -y $masternode; exit'
 exit
-exit
-ssh n0001
-ssh $masternode
-exit
-exit
-
-ssh n0001
-ssh $masternode
-exit
+# try to ssh via ssh
+ssh -y n0001 'ssh -y $masternode; exit'
 exit
 pdsh -R ssh -w (masternodename),n0001 hostname
 pdsh -R ssh -w (masternodename),n0001 uname -a
-
 exit
 exit

@@ -1,8 +1,9 @@
 #!/bin/bash
 
-sssh n0001
-ssh $masternode
-exit
+# masternode
+masternode=$(hostname)
+
+ssh -y n0001 'ssh -y $masternode; exit'
 exit
 pdsh -R ssh -w $masternode,n0001 hostname
 pdsh -R ssh -w $masternode,n0001 uname -a
