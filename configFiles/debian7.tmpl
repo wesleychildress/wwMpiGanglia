@@ -1,0 +1,27 @@
+# Start debian7.tmpl
+
+#DESC: A base 64 bit Debian wheezy chroot
+
+# The general Deb include has all of the necessary functions, but requires
+
+# some basic variables specific to each chroot type to be defined.
+
+. include-deb
+
+ 
+ARCH="amd64"
+
+SUITE="wheezy"
+
+DEB_MIRROR="http://http.us.debian.org/debian/"
+
+ 
+
+# Install additional packages with debootstrap.
+
+PKGLIST="openssh-server,openssh-client,isc-dhcp-client,pciutils,strace,nfs-common,ethtool,iproute,iputils-ping,iputils-arping,net-tools,linux-image-amd64,kmod,ntp,python-dev,libxml2,gfortran"
+
+ 
+
+# End debian7.tmpl
+

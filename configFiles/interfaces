@@ -1,0 +1,20 @@
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# Use DHCP for public interface
+auto eth0
+iface eth0 inet dhcp
+
+# or for static ip (we will not be doing this, but you should see an example as to how):
+# auto eth0
+# iface eth0 inet static
+# address 131.118.33.140
+# netmask 255.255.255.248
+# gateway 131.118.33.137
+
+auto eth1
+iface eth1 inet static
+address 10.253.1.254
+netmask 255.255.255.0
+gateway 10.253.1.254

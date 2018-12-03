@@ -1,0 +1,19 @@
+#GENERATED_ENTRIES#
+
+tmpfs /dev/shm tmpfs defaults 0 0
+
+devpts /dev/pts devpts gid=5,mode=620 0 0
+
+sysfs /sys sysfs defaults 0 0
+
+proc /proc proc defaults 0 0
+
+10.253.1.254:/home /home nfs defaults 0 0
+
+10.253.1.254:/srv/chroots /srv/chroots nfs defaults 0 0
+
+10.253.1.254:/srv/chroots/debian7/vnfs /vnfs nfs defaults 0 0
+
+10.253.1.254:/usr/local /usr/local nfs defaults 0 0
+
+10.253.1.254:/opt /opt nfs defaults 0 0
