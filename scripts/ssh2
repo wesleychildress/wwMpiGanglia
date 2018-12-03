@@ -10,7 +10,7 @@ su $non-root
 
 cd
 echo -ne '\n' | ssh-keygen -t rsa
-# (enter no passphrase)
+# *****(enter no passphrase)
 cd ~/.ssh
 cp id_rsa.pub authorized_keys
 cd
