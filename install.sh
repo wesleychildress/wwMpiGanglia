@@ -6,7 +6,8 @@ apt-get install -f
 # List of necessary packages
 LIST_OF_APPS="ssh ntp qt-sdk pkg-config ncurses-dev nfs-server libselinux1-dev pdsh tftp gfortran
 libxml2-dev libboost-dev tk-dev apache2 libapache2-mod-perl2 tftpd-hpa debootstrap tcpdump
-isc-dhcp-server curl libterm-readline-gnu-perl"
+isc-dhcp-server curl libterm-readline-gnu-perl apache2 php5 php5-mysql libapache2-mod-php5
+ganglia-monitor rrdtool gmetad ganglia-webfrontend"
 # current directory for reference
 DIR=$( pwd )
 
@@ -24,9 +25,18 @@ apt-get install -y mysql-server mysql-client
 # install other important packages:
 apt-get install -y $LIST_OF_APPS
 
+# set selinux to permisive
 mv -f /etc/selinux/config /etc/selinux/config.og
 cp -f $( pwd )/configFiles/config /etc/selinux/config
 setenforce 0
+
+# start ganglia services
+cp /etc/ganglia-webfrontend/apache.conf /etc/apache2/sites-enabled/ganglia.conf
+#/etc/ganglia/gmetad.conf
+#/etc/ganglia/gmond.conf
+/etc/init.d/ganglia-monitor start
+/etc/init.d/gmetad start
+/etc/init.d/apache2 restart
 
 # Build and install MPICH
 cd $DIR/mpich
@@ -55,6 +65,16 @@ mv -f /usr/local/etc/warewulf/vnfs.conf /usr/local/etc/warewulf/vnfs.conf.og
 cp -f $DIR/configFiles/vnfs.conf /usr/local/etc/warewulf/vnfs.conf
 
 cp -f $DIR/configFiles/debian7.tmpl /usr/local/libexec/warewulf/wwmkchroot/debian7.tmpl
+
+# cp config files start ganglia services
+cp /etc/ganglia-webfrontend/apache.conf /etc/apache2/sites-enabled/ganglia.conf
+#/etc/ganglia/gmetad.conf
+#/etc/ganglia/gmond.conf
+
+# start ganglia services
+/etc/init.d/ganglia-monitor start
+/etc/init.d/gmetad start
+/etc/init.d/apache2 restart
 
 # Create directories necessary for successful chrooting:
 mkdir /srv/chroots
@@ -115,14 +135,17 @@ cp -f $DIR/configFiles/sources.list /srv/chroots/debian7/etc/apt/sources.list
 mv -f /srv/chroots/debian7/etc/ntp.conf /srv/chroots/debian7/etc/ntp.conf.og
 cp -f $DIR/configFiles/ntp.conf /srv/chroots/debian7/etc/ntp.conf
 
-# cp ganglia into place /etc/ganglia/gmond.conf
-mv -f /srv/chroots/debian7/etc/ganglia/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf
-cp -f $DIR/configFiles/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf
-
 # update debian7 vnfs (magic land)
 chroot /srv/chroots/debian7 ./chroot.sh
 
-# build image for final time
+# build image
+wwvnfs --chroot /srv/chroots/debian7  --hybridpath=/vnfs
+
+# cp ganglia into place /etc/ganglia/gmond.conf
+mv -f /srv/chroots/debian7/etc/ganglia/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf.og
+cp -f $DIR/configFiles/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf
+
+# build image for a final time 
 wwvnfs --chroot /srv/chroots/debian7  --hybridpath=/vnfs
 
 # update the files and everything else!!!!!
