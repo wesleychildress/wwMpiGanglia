@@ -68,8 +68,10 @@ cp -f $DIR/configFiles/debian7.tmpl /usr/local/libexec/warewulf/wwmkchroot/debia
 
 # cp config files start ganglia services
 cp /etc/ganglia-webfrontend/apache.conf /etc/apache2/sites-enabled/ganglia.conf
-#/etc/ganglia/gmetad.conf
-#/etc/ganglia/gmond.conf
+mv -f /etc/ganglia/gmetad.conf /etc/ganglia/gmetad.conf.og
+cp -f $DIR/configFiles/gmetad.conf /etc/ganglia/gmetad.conf
+mv -f /etc/ganglia/gmond.conf /etc/ganglia/gmond.conf.og
+cp -f $DIR/configFiles/gmond.conf /etc/ganglia/gmond.conf
 
 # start ganglia services
 /etc/init.d/ganglia-monitor start
@@ -110,6 +112,10 @@ cp -f $DIR/configFiles/fstab /srv/chroots/debian7/etc/fstab
 mv -f /srv/chroots/debian7/etc/rc.local /srv/chroots/debian7/etc/rc.local.og
 cp -f $DIR/configFiles/rc.local /srv/chroots/debian7/etc/rc.local
 
+# ask for n0001 MAC
+read -p "Enter the MAC address of n0001: "  MAC
+wwsh node new n0001 --hwaddr=$MAC --ipaddr=10.253.1.1
+
 # restart nfs on master node
 /etc/init.d/nfs-kernel-server restart
 /etc/init.d/nfs-common restart
@@ -135,17 +141,16 @@ cp -f $DIR/configFiles/sources.list /srv/chroots/debian7/etc/apt/sources.list
 mv -f /srv/chroots/debian7/etc/ntp.conf /srv/chroots/debian7/etc/ntp.conf.og
 cp -f $DIR/configFiles/ntp.conf /srv/chroots/debian7/etc/ntp.conf
 
+# install ganglia monitor in magic land
+chroot /srv/chroots/debian7 ./gangliaIn.sh
+# move ganglia config into place
+mv -f /srv/chroots/debian7/etc/ganglia/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf.og
+cp -f $DIR/configFiles/clientGmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf
+
 # update debian7 vnfs (magic land)
 chroot /srv/chroots/debian7 ./chroot.sh
 
 # build image
-wwvnfs --chroot /srv/chroots/debian7  --hybridpath=/vnfs
-
-# cp ganglia into place /etc/ganglia/gmond.conf
-mv -f /srv/chroots/debian7/etc/ganglia/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf.og
-cp -f $DIR/configFiles/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf
-
-# build image for a final time 
 wwvnfs --chroot /srv/chroots/debian7  --hybridpath=/vnfs
 
 # update the files and everything else!!!!!

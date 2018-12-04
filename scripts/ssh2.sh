@@ -9,15 +9,17 @@ masternode=$(hostname)
 su - $nonroot << EOF
 cd
 echo | ssh-keygen -Pt rsa ''
-exit
-EOF
-
-# *****(enter no passphrase)
-su - $nonroot << EOF
 cd ~/.ssh
 cp id_rsa.pub authorized_keys
 exit
 EOF
+
+# *****(enter no passphrase)
+#su - $nonroot << EOF
+#cd ~/.ssh
+#cp id_rsa.pub authorized_keys
+#exit
+#EOF
 
 su - $nonroot << EOF
 ssh -y n0001 'ssh -y $masternode 'exit'; exit'
