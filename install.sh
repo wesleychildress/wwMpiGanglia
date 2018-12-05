@@ -1,7 +1,6 @@
 #!/bin/bash
 apt-get update
 apt-get upgrade
-apt-get install -f
 
 # List of necessary packages
 LIST_OF_APPS="ssh ntp qt-sdk pkg-config ncurses-dev nfs-server libselinux1-dev pdsh tftp gfortran
@@ -29,14 +28,6 @@ apt-get install -y $LIST_OF_APPS
 mv -f /etc/selinux/config /etc/selinux/config.og
 cp -f $( pwd )/configFiles/config /etc/selinux/config
 setenforce 0
-
-# start ganglia services
-cp /etc/ganglia-webfrontend/apache.conf /etc/apache2/sites-enabled/ganglia.conf
-#/etc/ganglia/gmetad.conf
-#/etc/ganglia/gmond.conf
-/etc/init.d/ganglia-monitor start
-/etc/init.d/gmetad start
-/etc/init.d/apache2 restart
 
 # Build and install MPICH
 cd $DIR/mpich
@@ -66,7 +57,7 @@ cp -f $DIR/configFiles/vnfs.conf /usr/local/etc/warewulf/vnfs.conf
 
 cp -f $DIR/configFiles/debian7.tmpl /usr/local/libexec/warewulf/wwmkchroot/debian7.tmpl
 
-# cp config files start ganglia services
+# cp ganglia config files
 cp /etc/ganglia-webfrontend/apache.conf /etc/apache2/sites-enabled/ganglia.conf
 mv -f /etc/ganglia/gmetad.conf /etc/ganglia/gmetad.conf.og
 cp -f $DIR/configFiles/gmetad.conf /etc/ganglia/gmetad.conf
@@ -76,7 +67,7 @@ cp -f $DIR/configFiles/gmond.conf /etc/ganglia/gmond.conf
 # start ganglia services
 /etc/init.d/ganglia-monitor start
 /etc/init.d/gmetad start
-/etc/init.d/apache2 restart
+#/etc/init.d/apache2 restart
 
 # Create directories necessary for successful chrooting:
 mkdir /srv/chroots
