@@ -123,7 +123,6 @@ wwsh dhcp update
 
 # put ./chroot.sh in place
 cp $DIR/configFiles/chroot.sh /srv/chroots/debian7/chroot.sh
-#cp $DIR/configFiles/gangliaIn.sh /srv/chroots/debian7/gangliaIn.sh
 
 # update sources
 mv -f /srv/chroots/debian7/etc/apt/sources.list /srv/chroots/debian7/etc/apt/sources.list.og
@@ -132,9 +131,6 @@ cp -f $DIR/configFiles/sources.list /srv/chroots/debian7/etc/apt/sources.list
 # We want the clocks to be the same on all nodes (synchronized)
 mv -f /srv/chroots/debian7/etc/ntp.conf /srv/chroots/debian7/etc/ntp.conf.og
 cp -f $DIR/configFiles/ntp.conf /srv/chroots/debian7/etc/ntp.conf
-
-# install ganglia monitor in magic land
-#chroot /srv/chroots/debian7 ./gangliaIn.sh
 
 # move ganglia config into place
 mv -f /srv/chroots/debian7/etc/ganglia/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf.og
