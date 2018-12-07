@@ -103,10 +103,6 @@ cp -f $DIR/configFiles/fstab /srv/chroots/debian7/etc/fstab
 mv -f /srv/chroots/debian7/etc/rc.local /srv/chroots/debian7/etc/rc.local.og
 cp -f $DIR/configFiles/rc.local /srv/chroots/debian7/etc/rc.local
 
-# ask for n0001 MAC
-read -p "Enter the MAC address of n0001: "  MAC
-wwsh node new n0001 --hwaddr=$MAC --ipaddr=10.253.1.1
-
 # restart nfs on master node
 /etc/init.d/nfs-kernel-server restart
 /etc/init.d/nfs-common restart
@@ -147,6 +143,10 @@ wwsh file sync
 wwsh dhcp update
 wwsh pxe update
 echo 'success'
+
+# ask for n0001 MAC
+read -p "Enter the MAC address of n0001: "  MAC
+wwsh node new n0001 --hwaddr=$MAC --ipaddr=10.253.1.1
 
 # reboot
 echo 'System will now reboot to finish install'
