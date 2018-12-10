@@ -117,7 +117,10 @@ showmount -e 10.253.1.254
 wwvnfs --chroot /srv/chroots/debian7  --hybridpath=/vnfs
 wwsh dhcp update
 
-# put ./chroot.sh in place
+# into chroot
+cp -rf $DIR/slurm-18 /srv/chroots/debian7/slurm-18
+
+# put ./chroot.sh & slurm.sh in place
 cp $DIR/configFiles/chroot.sh /srv/chroots/debian7/chroot.sh
 
 # update sources
@@ -131,6 +134,7 @@ cp -f $DIR/configFiles/ntp.conf /srv/chroots/debian7/etc/ntp.conf
 # move ganglia config into place
 mv -f /srv/chroots/debian7/etc/ganglia/gmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf.og
 cp -f $DIR/configFiles/clientGmond.conf /srv/chroots/debian7/etc/ganglia/gmond.conf
+
 
 # update debian7 vnfs (magic land)
 chroot /srv/chroots/debian7 ./chroot.sh
@@ -161,12 +165,27 @@ until [ "$ADD" == "no" ]
          read ADD
          done
     done
-    
+
+# slurm
+cd $DIR/slurm-18 
+./configure
+make
+make install
+cd $DIR
+
+# get slurm in magic land 
+chroot /srv/chroots/debian7/slurm-18 ./slurm.sh
+
+# get slurm.conf in place
+cp -f $DIR/configFiles/slurm.conf /usr/local/etc/slurm.conf
+cp -f $DIR/configFiles/slurm.conf /srv/chroots/debian7/usr/local/slurm.conf
+
 # update the files and everything else!!!!!
 wwsh file sync
 wwsh dhcp update
 wwsh pxe update
 echo 'success'
+ 
 
 # ask to reboot
 until [ "$ANS" == "yes" ] || [ "$ANS" == "no" ]
