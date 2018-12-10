@@ -1,4 +1,5 @@
 #!/bin/bash
+#this piece of shit doesn't work as of yet 
 
 # current directory for reference
 DIR=$( pwd )

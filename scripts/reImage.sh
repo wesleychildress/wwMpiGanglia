@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# rebuild your image after adding or updating packages
+
 # update debian7 vnfs (magic land)
 chroot /srv/chroots/debian7 ./chroot.sh
 
