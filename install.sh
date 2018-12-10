@@ -144,11 +144,42 @@ wwsh dhcp update
 wwsh pxe update
 echo 'success'
 
-# ask for n0001 MAC
-read -p "Enter the MAC address of n0001: "  MAC
-wwsh node new n0001 --hwaddr=$MAC --ipaddr=10.253.1.1
+# add nodes
+n=1
+echo -n "Would you like to add n000$n? yes/no : "
+read ADD
 
-# reboot
-echo 'System will now reboot to finish install'
-sleep 5s; shutdown -r now
-exit
+until [ "$ADD" == "no" ]
+    do
+	   echo -n "Enter the MAC address of n000$n: "  
+       read MAC
+	   wwsh node new n000$ --hwaddr=$MAC --ipaddr=10.253.1.$n
+	   let 'n++';ADD=''
+       until [ "$ADD" == "yes" ] || [ "$ADD" == "no" ]
+         do  
+         echo -n "Would you like to add n000$n? yes/no : "
+         read ADD
+         done
+    done
+    
+# update the files and everything else!!!!!
+wwsh file sync
+wwsh dhcp update
+wwsh pxe update
+echo 'success'
+
+# ask to reboot
+until [ "$ANS" == "yes" ] || [ "$ANS" == "no" ]
+    do
+        echo -n 'Would you like to reboot? yes/no : '  
+        read ANS
+    done
+
+if [ "$ANS" == "yes" ]; 
+    then
+        # reboot
+        echo 'System will now reboot to finish install'
+        sleep 5s; shutdown -r now
+    fi
+    
+echo 'ok byyyyye'
