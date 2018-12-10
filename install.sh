@@ -6,7 +6,7 @@ apt-get upgrade
 LIST_OF_APPS="ssh ntp qt-sdk pkg-config ncurses-dev nfs-server libselinux1-dev pdsh tftp gfortran
 libxml2-dev libboost-dev tk-dev apache2 libapache2-mod-perl2 tftpd-hpa debootstrap tcpdump
 isc-dhcp-server curl libterm-readline-gnu-perl apache2 php5 php5-mysql libapache2-mod-php5
-ganglia-monitor rrdtool gmetad ganglia-webfrontend"
+ganglia-monitor rrdtool gmetad ganglia-webfrontend libmunge-dev libmunge2 munge"
 # current directory for reference
 DIR=$( pwd )
 
