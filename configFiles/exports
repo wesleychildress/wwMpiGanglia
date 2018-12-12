@@ -13,7 +13,7 @@
 
 /srv/chroots 10.253.1.0/255.255.255.0(ro,no_root_squash,no_subtree_check)
 
-/srv/chroots/debian7/vnfs 10.253.1.0/255.255.255.0(ro,no_root_squash,no_subtree_check)
+/srv/chroots/debian7/vnfs 10.253.1.0/255.255.255.0(rw,no_root_squash,no_subtree_check)
 
 /usr/local 10.253.1.0/255.255.255.0(rw,no_root_squash,no_subtree_check)
 

@@ -151,3 +151,9 @@ mpicc -o hello.out hello.c
 
 # Run the executable as non-root user:
 mpirun -hosts (masternodename),n0001 -n 12 ./hello.out
+
+# slurm.conf slurmUser should be set as slurm and should be changed as well as associated dir&files however for strictly testing purposes this should not be a problem. Also you need to add the hostname of masternode in slurm.conf located in /usr/local/etc/slurm.conf slurmctldHost=(masternodename)
+ 
+
+# i will attempt to update the installer for the appropriate munge dir ownership however the way this install stands as of now all associated dir&files should be updated to munge:munge this can be accomplished by chown munge:munge /dir /dir/file
+
