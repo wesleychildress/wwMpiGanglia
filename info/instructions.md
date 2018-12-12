@@ -1,7 +1,14 @@
 # wwMpiGanglia
-an attempt to automate the installation and configuration of a cluster with warewulf and mpich
+# this installer should be run as root and is intended to help to be for a test/lab environment. 
+# intended for debian 7 wheey
+# installs mpich-3.2.1, warewulf3.6, Ganglia, munge, slurm18, as well as all dependencies and other necessary packages
 
-Guidelines for Creating Debian 7.11 Linux Cluster
+
+
+# wwMpiGanglia
+# an attempt to automate the installation and configuration of a cluster with warewulf and mpich
+
+# Guidelines for Creating Debian 7.11 Linux Cluster
 ####
 #  Create USB bootable linux install
 #  First: download debian “wheezy” amd64 netinstall iso from
@@ -19,16 +26,18 @@ diskutil unmountDisk /dev/disk3
 sudo dd if=debian-7.11.0-amd64-netinst.iso of=/dev/disk3 bs=1m
 
 # For a simple installation on a single drive, use the following primary partitioning scheme:
-/boot (~16 GB, ext4)
-Swap (2x Physical Memory)
-/ (~200 GB, ext4)
-/usr (~200 GB, ext4)
-(Semi-optional:)
-/home (~500 GB, ext4)
-/usr/local (depends on how much custom/source installations you’ll have)
-/scratch (common computing filespace)
-(Not semi-optional; i.e., mandatory for true production systems:)
-/tmp (????)
+/* 
+   /boot (~16 GB, ext4)
+   Swap (2x Physical Memory)
+   / (~200 GB, ext4)
+   /usr (~200 GB, ext4)
+   (Semi-optional:)
+   /home (~500 GB, ext4)
+   /usr/local (depends on how much custom/source installations you’ll have)
+   /scratch (common computing filespace)
+   (Not semi-optional; i.e., mandatory for true production systems:)
+   /tmp (????)
+*/
 
 # For the installation process, you’ll typically choose eth0 (external NIC) and DHCP to be autoconfigured.  Nothing needs to be done for eth1.
 
@@ -85,9 +94,9 @@ echo -ne '\n' | ssh-keygen -t rsa
 cd ~/.ssh
 cp id_rsa.pub authorized_keys
 cd
-yes "" | ssh n0001
+ssh n0001
 # (answer yes)
-yes "" | ssh $masternode
+ssh $masternode
 # (answer yes)
 exit
 exit
@@ -111,7 +120,7 @@ ntpq> peers
 # manually add new nodes by individually executing each of the following commands:
 wwsh node new n0002 --hwaddr=b8:ac:6f:34:b2:fd --ipaddr=10.253.1.2
 wwsh node new n0003 --hwaddr=b8:ac:6f:34:62:c7 --ipaddr=10.253.1.3
-# ........... up to .253 master is .254 and dhcp broadcasting on .255
+# ........... up to .253 (master is .254)
 wwsh node new n0016 --hwaddr=b8:ac:6f:32:2e:d4 --ipaddr=10.253.1.16
 
 # Make sure all of the new nodes have their hostnames added to the ssh config files by logging #  into them manually over ssh, which should prompt for their addition to the files
