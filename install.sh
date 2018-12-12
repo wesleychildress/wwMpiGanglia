@@ -122,6 +122,7 @@ cp -rf $DIR/slurm-18 /srv/chroots/debian7/slurm-18
 
 # put ./chroot.sh & slurm.sh in place
 cp $DIR/configFiles/chroot.sh /srv/chroots/debian7/chroot.sh
+cp $DIR/configFiles/slurm.sh /srv/chroots/debian7/slurm.sh
 
 # update sources
 mv -f /srv/chroots/debian7/etc/apt/sources.list /srv/chroots/debian7/etc/apt/sources.list.og
@@ -157,7 +158,7 @@ until [ "$ADD" == "no" ]
     do
 	   echo -n "Enter the MAC address of n000$n: "  
        read MAC
-	   wwsh node new n000$ --hwaddr=$MAC --ipaddr=10.253.1.$n
+	   wwsh node new n000$n --hwaddr=$MAC --ipaddr=10.253.1.$n
 	   let 'n++';ADD=''
        until [ "$ADD" == "yes" ] || [ "$ADD" == "no" ]
          do  
@@ -174,11 +175,13 @@ make install
 cd $DIR
 
 # get slurm in magic land 
-chroot /srv/chroots/debian7/slurm-18 ./slurm.sh
+chroot /srv/chroots/debian7 ./slurm.sh
 
 # get slurm.conf in place
 cp -f $DIR/configFiles/slurm.conf /usr/local/etc/slurm.conf
 cp -f $DIR/configFiles/slurm.conf /srv/chroots/debian7/usr/local/slurm.conf
+chown slurm:slurm /srv/chroots/debian7/usr/local/slurm.conf
+chown slurm:slurm /usr/local/slurm.conf
 
 # update the files and everything else!!!!!
 wwsh file sync
